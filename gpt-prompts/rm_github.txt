@@ -1,0 +1,35 @@
+<!-- 
+create the text for a github README.md file for a react and node app that creates a chat bot to handle data queries
+ details:
+  - react app that uses the OpenAI API to do the following:
+    - displays a chat experience to ask data questions
+    - gives the option of multiple different bots with different personalities to interact with
+    - sends chat entries to the node app
+    - displays the chatbot response to the user
+    - diplays the data response to the user when applicable
+  - node app that does the following:
+    - using the OpenAI API define an entry from the user semantically as to whether it is a chat or data request
+    - if it is a chat request, send it to the OpenAI API and return the response
+    - if it is a data request, do the following:
+      - send the message to the openai api to get a placeholder response for the chatbot
+      - send the message to the openai api to generate a sql query
+      - send the sql query to a sql server
+      - send the sql server response to the front end to display the data to the user
+ methodolgy:
+  - create a react app
+  - create a node app
+  - use the OpenAI playground to generate react and node code to complete the tasks in the details section
+ purpose:
+  - to learn how to use the OpenAI API
+  - to learn how to use the OpenAI playground
+  - to learn how to use the OpenAI API to create a chatbot
+  - to learn how to use the OpenAI API to create a data query
+  - to demonstrate how chaining the functionality of the OpenAI API can enable a platform to complete complex tasks in a generative way
+  - to show the speed that the OpenAI API can be used to create a platform
+ requirements:
+  - text should be formatted for a README.md file for a github repo 
+  - no installation instructions are needed
+ additional considerations:
+  - this is a proof of concept that was meant to be done quickly and not intended to evolve into a production ready application
+  - this project does require a subscription to the OpenAI API
+-->

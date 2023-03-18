@@ -1,0 +1,17 @@
+update to do the following:
+    the approve button should send the sql text to the '/api/sql' post and expect  back a json that conforms to the following:
+        send an object with the following keys:
+            sql: vSQL
+        expect a return object with the following keys:
+            headers - map to vQR.headers
+            rows - map to vQR.rows
+    the '/api/chat' post request should do the following:
+        send an object with the following keys:
+            chat_entry: vLCE
+            chat_style: vCS
+        expect a return object with the following keys:
+            semantics - the semantics of the query, not currently used in this app
+            bot - the response that will be displayed to the user
+            data - the query text that will later be reviewed by the user and potentially sent back through the '/api/sql' post request
+            chat_style - the chat bot style that was used to get the response from the openai api, not used in the app
+            chat_prompt - the prompt that was used to get the response from the openai api, not used in the app

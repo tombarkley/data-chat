@@ -1,0 +1,54 @@
+// this is for a node.js file that is called from the sql.js file
+// this file contains a function sqlReview that is called from the sql.js file
+// this function is called prior to sending a sql statement to the database
+// the sql statement is in the form of sql server
+// this function is used to review the sql statement for security issues 
+// if the sql statement is not secure then the function returns false
+// if the sql statement is secure then the function returns true
+// when it looks for specific strings in the sql statement it is case insensitive
+// it should use an array (badStrings) for the strings it is looking for in the statement
+// there should not be any duplicated entries in badStrings
+// the function will also need to check for sql injection attacks
+// the function will also need to check to see if the sql statement is only grabbing data from permitted databases and schemas
+// the allowed databases and schemas should be in an array (allowedDatabases) with objects that contain the following:
+// {database: 'databaseName', schemas: ['schemaNameOne', 'schemaNameTwo', 'schemaNameThree']'}
+// it will import the allowedDatabases from the .env file
+// the function is called from the sql.js file as follows:
+// if (sqlReview(sql)) { ... }
+
+const dotenv = require('dotenv');
+dotenv.config(
+    {path: '../.env'}
+);
+
+function sqlReview(sql) {
+    var badStrings = [
+        'drop',
+        'delete',
+        'truncate',
+        'alter',
+        'create',
+        'insert',
+        'update',
+        'shutdown',
+        'restart',
+        'kill',
+        'waitfor',
+        'reconfigure',
+        'exec',
+        'execute',
+        'xp_',
+        'sp_',
+        'sys.',
+        'sys.',
+        'sys.objects',
+        'sys.columns',
+        'sys.tables',
+        'sys.views',
+        'sys.schemas',
+        'information_schema.',
+        'information_schema.',
+        'information_schema.tables',
+        'information_schema.columns'
+    ];
+
