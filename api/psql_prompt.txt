@@ -1,0 +1,82 @@
+### Postgres SQL tables, with their properties:
+# Table members {
+#   id int
+#   name varchar(256)
+#   age int
+#   email varchar(256)
+#   home_phone varchar(10)
+#   mobile_phone varchar(10)
+#   state varchar(2)
+# }
+# Table products {
+#   id int
+#   member_id int [ref: > members.id]
+#   group varchar(2) [note: 'Values are:
+#     L = Loan,
+#     D = Deposit
+#   ']
+#   type varchar(256) [note: 'Values are:
+#     HELOC,
+#     Checking,
+#     Savings,
+#     Certificate,
+#     Money Market,
+#     Second Mortgage Fixed,
+#     Second Mortgage ARM,
+#     Auto Loan,
+#     Personal Loan,
+#     Credit Card,
+#     First Morgage
+#   ']
+#   open_date datetime
+#   balance decimal(20,2)
+# }
+# Table transactions {
+#   id int
+#   member_id int [ref: > members.id]
+#   // product_id int [ref: > products.id]
+#   timestamp datetime
+#   merchant varchar(256)
+#   type varchar(2) [note: 'Values are:
+#     W = Withdrawal,
+#     D = Deposit
+#   ']
+#   product_group varchar(2) [note: 'Values are:
+#     L = Loan,
+#     D = Deposit
+#   ']
+#   amount decimal(20,2)
+#   source varchar(2) [note: 'Values are:
+#     K = Check,
+#     DC = Debit Card,
+#     CC = Credit Card,
+#     B = Bill Pay,
+#     M = Mobile Deposit,
+#     C = Cash,
+#     AT = ATM,
+#     A = ACH,
+#     T = Transfer
+#   ']
+# }
+# Table digital_events {
+#   member_id int [ref: > members.id]
+#   timestamp datetime
+#   event_type varchar(128) [note: 'Values are:
+#     eStatement Enrollment,
+#     eStatement UnEnrollment,
+#     Mobile Login,
+#     Bill Pay,
+#     Remote Deposit
+#   ']
+# }
+### output a query based on the user message
+### constraints:
+#the declared constant myConstants.vToday represents the current date - any relative dates must be calculated based on this variable
+### data descriptions:
+#Transactions.merchant does not contain any punctuation marks
+#Transactions.merchant may be an abbreviated name for the merchant
+#Transactions.merchant may need fuzzy matching logic
+#Transactions.type is broken into the following: W=Withdrawal, D=Deposit
+#Transactions.source is broken into the following: D=Debit Card, C=Credit Card, K=Check, A=ACH
+###definitions:
+#power user is a member who has three of the following: eStatements, bill pay in the last 6 months, mobile deposit in the last 6 months, has some type of loan, an average balance of at least 500, a credit card with at least 10 transactions in the past 30 days

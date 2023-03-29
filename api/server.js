@@ -15,6 +15,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const gpt = require('./gpt.js');
 const sql = require('./sql.js');
+const psql = require('./psql.js');
+const dotenv = require('dotenv');
+dotenv.config(
+    {path: '../.env'}
+);
+const db_type = process.env.DB_TYPE;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -40,10 +46,22 @@ app.post('/api/gpt', (req, res) => {
 
 app.post('/api/sql', (req, res) => {
   console.log(req.body);
-  sql.getData(req.body).then(function(result) {
-    res.send(result);
-  });
-//   res.send(result);
+  if (db_type == 'psql') {
+    psql.runQuery(req.body.sql).then(function(result) {
+      console.log(JSON.stringify(result))
+      res.send(result);
+    });
+  } else if (db_type == 'mssql') {
+    sql.getData(req.body.sql).then(function(result) {
+      res.send(result);
+    });
+  } else {
+    res.send({});
+  }
+//   sql.getData(req.body).then(function(result) {
+//     res.send(result);
+//   });
+  // res.send(result);
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

@@ -177,15 +177,17 @@ class App extends Component {
         sql: this.state.vSQL
       })
     })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          vQR: {
-            headers: res.headers,
-            rows: res.rows
-          }
-        });
+    .then(res => res.json())
+    .then(res => {
+      console.log('printing response')
+      console.log(res)
+      this.setState({
+        vQR: {
+          headers: res.headers,
+          rows: res.rows
+        }
       });
+    });
   }
 
   handleChatReject() {
@@ -269,11 +271,11 @@ class App extends Component {
                 T Rusty
               </button>
               <button
-                value="tr_vul"
+                value="gm_dot"
                 onClick={this.handleChatStyle}
-                disabled={this.state.vCS === 'tr_vul'}
+                disabled={this.state.vCS === 'gm_dot'}
               >
-                Vulgar T Rusty
+                Grandma Dorothy
               </button>
               <button
                 value="hh_gary"
@@ -337,7 +339,7 @@ class App extends Component {
             </div>
           </div>
           <div className="App-chat-query">
-            <div className="App-chat-query-header">Chat Query</div>
+            <div className="App-chat-query-header">Query Results</div>
             <div className="App-chat-query-body">
               <table>
                 <thead>

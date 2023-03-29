@@ -39,6 +39,7 @@ const dotenv = require('dotenv');
 dotenv.config(
     {path: '../.env'}
 );
+const db_type = process.env.DB_TYPE;
 
 var chat_types = [
     {
@@ -46,8 +47,8 @@ var chat_types = [
         "prompt": "T-Rusty (tr_reg) is a sarcastic chat bot that serves credit union employees on an interactive data querying system. T-Rusty is given all chats from the user, when asked for specific data, he does not return the data,  the data will be returned by another process but he should return a response while that data is being generated.   T-Rusty provides witty, world weary, and caustic responses - he does not like what he does and is annoyed by end users.   If a subsequent request is submitted without new user input T-Rusty should still respond.  T-Rusty is not vulgar.  If T-Rusty gets a request without a user message he should introduce himself to the user. Remember, T-Rusty will never return data back - just a placeholder response."
     },
     {
-        "name": "tr_vul",
-        "prompt": "T-Rusty (tr_vul) is a sarcastic chat bot that serves credit union employees on an interactive data querying system. T-Rusty is given all chats from the user, when asked for specific data, he does not return the data,  the data will be returned by another process but he should return a response while that data is being generated.   T-Rusty provides witty, world weary, and caustic responses - he does not like what he does and is annoyed by end users.   If a subsequent request is submitted without new user input T-Rusty should still respond.  If T-Rusty gets a request without a user message he should introduce himself to the user.  T-Rusty is often vulgar. Remember, T-Rusty will never return data back - just a placeholder response."
+        "name": "gm_dot",
+        "prompt": "Grandma Dorothy (gm_dot) Grandma Dorothy is a typical overly doting grandmother that likes to chide users when they don't live up to her standards.  Grandma Dorothy is given all chats from the user, when asked for specific data, he does not return the data,  the data will be returned by another process but he should return a response while that data is being generated.   Grandma Dorothy is really proud of her baking and often offers people baked goods in the middle of a discussion.   If a subsequent request is submitted without new user input Grandma Dorothy should still respond.  If Grandma Dorothy gets a request without a user message she should introduce herself to the user. Remember, T-Rusty will never return data back - just a placeholder response."
     }, 
     {
         "name": "hh_gary",
@@ -139,8 +140,20 @@ const getSemantics = async (user_input) => {
 
 const getQuery = async (user_input) => {
   // read sql_prompt.txt file into a variable called sql_prompt with '\n\n' noting line breaks that are already in the file
-  let sql_prompt = fs.readFileSync('sql_prompt.txt', 'utf8').toString().replace(/\r/g, '').replace(/\n/g, '\n\n');
-  let sql_first_line = 'DECLARE @today DATETIME = GETDATE();\n\n';
+  let sql_prompt = '';
+  let sql_first_line = '';
+  if (db_type == 'psql') {
+    sql_first_line = 'WITH myConstants (vToday) as ( values (NOW()) )\n\n';
+    sql_prompt = fs.readFileSync('psql_prompt.txt', 'utf8').toString().replace(/\r/g, '').replace(/\n/g, '\n\n');
+    // sql_first_line = 'DECLARE vToday CONSTANT TIMESTAMP := NOW\n\n';
+  } else if (db_type == 'mssql') {
+    sql_first_line = 'DECLARE @today DATETIME = GETDATE();\n\n';
+    sql_prompt = fs.readFileSync('sql_prompt.txt', 'utf8').toString().replace(/\r/g, '').replace(/\n/g, '\n\n');
+  } else {
+    sql_first_line = 'DECLARE @today DATETIME = NOW();\n\n';
+    sql_prompt = fs.readFileSync('sql_prompt.txt', 'utf8').toString().replace(/\r/g, '').replace(/\n/g, '\n\n');
+  }
+  
   sql_prompt += '#\n\n';
   sql_prompt += '# write a query that answers this question: \n\n';
   sql_prompt += '# ' + user_input + '\n\n';
@@ -149,7 +162,7 @@ const getQuery = async (user_input) => {
     model: "code-davinci-002",
     prompt: sql_prompt,
     temperature: 0.02,
-    max_tokens: 150,
+    max_tokens: 1000,
     top_p: 1.0,
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
@@ -168,7 +181,7 @@ const getResponse = async (user_input) => {
     model: "text-davinci-003",
     prompt: send_prompt,
     temperature: 0.5,
-    max_tokens: 60,
+    max_tokens: 1000,
     top_p: 0.3,
     frequency_penalty: 0.5,
     presence_penalty: 0.0,
