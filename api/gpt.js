@@ -159,7 +159,7 @@ const getQuery = async (user_input) => {
   sql_prompt += '# ' + user_input + '\n\n';
   sql_prompt += sql_first_line
   const response = await openai.createCompletion({
-    model: "code-davinci-002",
+    model: "text-davinci-003",
     prompt: sql_prompt,
     temperature: 0.02,
     max_tokens: 1000,

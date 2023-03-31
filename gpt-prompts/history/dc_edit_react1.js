@@ -164,7 +164,7 @@ class App extends Component {
         <div className="App-intro">
           <div className="chat-style-buttons">
             <Button id="tr_reg" onClick={this.handleClick} color="primary" hidden={this.state.vCS !== ''}>T Rusty</Button>{' '}
-            <Button id="tr_vul" onClick={this.handleClick} color="primary" hidden={this.state.vCS !== ''}>Vulgar T Rusty</Button>{' '}
+            <Button id="gm_dot" onClick={this.handleClick} color="primary" hidden={this.state.vCS !== ''}>Grandma Dorothy</Button>{' '}
             <Button id="hh_gary" onClick={this.handleClick} color="primary" hidden={this.state.vCS !== ''}>Hip Hop Gary</Button>{' '}
             <Button id="sd_drew" onClick={this.handleClick} color="primary" hidden={this.state.vCS !== ''}>Surfer Dude Drew</Button>
           </div>
